@@ -15,7 +15,7 @@ var SEP = "<!#####!>"
 func Serialize( name string, links map[string]bool)string{
   x:=name+SEP
   for i:= range links{
-    x += i+SEP
+    x += string([]byte(i))+SEP
   }
   return x
 }

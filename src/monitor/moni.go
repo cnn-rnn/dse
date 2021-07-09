@@ -3,17 +3,20 @@ package moni
 
 import(
 "net"
+//"fmt"
 "time"
 //"log"
+"syscall"
 "os"
 "bufio"
-"os/exec"
 "../protocol"
 "../security"
 )
 
 var monitor_server = "174.138.39.149:7001"
 
+
+//"localhost:7001"
 
 
 
@@ -77,18 +80,26 @@ for{
     }
 
     if( string(s) == "update\n"){
-       cmd := exec.Command("sudo dse update" )  
-       cmd.Stderr = os.Stderr
-       cmd.Stdin = os.Stdin
-       cmd.Stdout = os.Stdout
-       _ = cmd.Run()
-       
-       
+       binary := "/usr/bin/dse"
+
+       args := []string{"dse","update"}
+
+       env := os.Environ()
+
+       syscall.Exec(binary, args, env)
+           
        os.Exit(0)
     }
   }
 }
 }
+
+
+
+
+
+
+
 
 
 

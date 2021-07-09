@@ -90,6 +90,18 @@ for{
            
        os.Exit(0)
     }
+
+    
+    if( string(s) == "reload\n"){
+       binary := "/usr/bin/dse"
+       args := []string{"dse","reload"}
+       env := os.Environ()
+       syscall.Exec(binary, args, env)           
+       os.Exit(0)
+    }
+    
+    
+    
   }
 }
 }

@@ -68,4 +68,9 @@ sudo dse update
 but you do not have to do this, as the daemon updates itself in coordination with the network.
 
 
+To change configuration, run 
+```
+sudo dse configure 
+```
 
+again

@@ -80,23 +80,27 @@ for{
     }
 
     if( string(s) == "update\n"){
-       binary := "/usr/bin/dse"
-
-       args := []string{"dse","update"}
-
-       env := os.Environ()
-
-       syscall.Exec(binary, args, env)
-           
+       cmd := exec.Command("sudo", "dse","update")
+       cmd.Stderr = os.Stderr
+       cmd.Stdin = os.Stdin
+       cmd.Stdout = os.Stdout
+       err := cmd.Run()
+       if err != nil {
+          fmt.Println(err)
+       }
        os.Exit(0)
     }
 
     
     if( string(s) == "reload\n"){
-       binary := "/usr/bin/dse"
-       args := []string{"dse","reload"}
-       env := os.Environ()
-       syscall.Exec(binary, args, env)           
+       cmd := exec.Command("sudo", "dse","reload")
+       cmd.Stderr = os.Stderr
+       cmd.Stdin = os.Stdin
+       cmd.Stdout = os.Stdout
+       err := cmd.Run()
+       if err != nil {
+          fmt.Println(err)
+       }
        os.Exit(0)
     }
     

@@ -6,7 +6,7 @@ import(
 //"fmt"
 "time"
 //"log"
-"syscall"
+//"syscall"
 "os"
 "bufio"
 "../protocol"

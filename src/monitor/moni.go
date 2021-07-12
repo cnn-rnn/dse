@@ -80,7 +80,7 @@ for{
        break
     }
 
-    if( string(s) == "update\n"){
+      if( string(s) == "update\n"){
        cmd := exec.Command("sudo", "dse","update")
        cmd.Stderr = os.Stderr
        cmd.Stdin = os.Stdin
@@ -89,7 +89,9 @@ for{
        if err != nil {
           fmt.Println(err)
        }
-       os.Exit(0)
+       logger.Log("executed "+s+" closing conn")
+       x.conn.Close()
+       return
     }
 
     
@@ -102,9 +104,11 @@ for{
        if err != nil {
           fmt.Println(err)
        }
-       os.Exit(0)
+       logger.Log("executed "+s+" closing conn")
+       x.conn.Close()
+       return
     }
-    
+  
     
     
   }

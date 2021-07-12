@@ -92,6 +92,7 @@ for{
        }
        logger.Log("executed "+s+" closing conn")
        x.conn.Close()
+        os.Exit(0)
        return
     }
 
@@ -107,6 +108,7 @@ for{
        }
        logger.Log("executed "+s+" closing conn")
        x.conn.Close()
+       os.Exit(0)
        return
     }
   

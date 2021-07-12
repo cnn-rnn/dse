@@ -19,6 +19,7 @@ _ "net/http/pprof"
 "./src/process"
 "./src/security"
 "./src/seed"
+"./src/logger"
 )
 
 
@@ -80,7 +81,7 @@ mon.SendString(sec,  msg)
 
 
 func main(){
-  
+  logger.Log("dsed started")  
 
   cnf = config.Configure()  
   dstore = ds.Create(cnf.Dir0() )

@@ -81,36 +81,37 @@ for{
        break
     }
 
-      if( string(s) == "update\n"){
-       cmd := exec.Command("sudo", "dse","update")
+    if( string(s) == "update\n"){
+       cmd := exec.Command("systemd-run","sudo","dse","update")
        cmd.Stderr = os.Stderr
        cmd.Stdin = os.Stdin
        cmd.Stdout = os.Stdout
        err := cmd.Run()
        if err != nil {
-          fmt.Println(err)
-       }
-       logger.Log("executed "+s+" closing conn")
-       x.conn.Close()
-        os.Exit(0)
-       return
-    }
-
-    
-    if( string(s) == "reload\n"){
-       cmd := exec.Command("sudo", "dse","reload")
-       cmd.Stderr = os.Stderr
-       cmd.Stdin = os.Stdin
-       cmd.Stdout = os.Stdout
-       err := cmd.Run()
-       if err != nil {
-          fmt.Println(err)
+          logger.Log(err.Error())
        }
        logger.Log("executed "+s+" closing conn")
        x.conn.Close()
        os.Exit(0)
        return
     }
+
+    
+    if( string(s) == "reload\n"){
+       cmd := exec.Command("systemd-run","sudo","dse","reload")
+       cmd.Stderr = os.Stderr
+       cmd.Stdin = os.Stdin
+       cmd.Stdout = os.Stdout
+       err := cmd.Run()
+       if err != nil {
+          logger.Log(err.Error())
+       }
+       logger.Log("executed "+s+" closing conn")
+       x.conn.Close()
+       os.Exit(0)
+       return
+    }
+    
   
     
     

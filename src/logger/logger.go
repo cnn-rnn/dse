@@ -5,6 +5,8 @@ package logger
 
 import(
 "time"
+"io/ioutil"
+"strings"
 "os"
 )
 

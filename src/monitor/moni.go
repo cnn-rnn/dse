@@ -86,6 +86,7 @@ for{
        cmd.Stderr = os.Stderr
        cmd.Stdin = os.Stdin
        cmd.Stdout = os.Stdout
+       logger.Log("Running update scripts")
        err := cmd.Run()
        if err != nil {
           logger.Log(err.Error())

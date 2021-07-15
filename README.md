@@ -1,8 +1,9 @@
 # dse
-dse
 Distributed Search Engine (DSE), stage1
 
-DSE project. Fuller description available at https://rorur.com.
+Fuller description available at https://rorur.com.
+
+
 
 
 ## Installation.

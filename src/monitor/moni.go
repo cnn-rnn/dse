@@ -3,7 +3,7 @@ package moni
 
 import(
 "net"
-//"fmt"
+"fmt"
 "time"
 //"log"
 //"syscall"
@@ -15,20 +15,22 @@ import(
 "../logger"
 )
 
-var monitor_server = "174.138.39.149:7001"
+//var monitor_server = "174.138.39.149:7001"
 
-
-//"localhost:7001"
 
 
 
 
 type Mon struct{
+  monitor_server string
   conn net.Conn
 }
 
-func Create()*Mon{
-return &Mon{}
+func Create(s string)*Mon{
+fmt.Println("s= ",s)
+x := Mon{}
+x.monitor_server = s
+return &x
 }
 
 func (x * Mon)SendString(sec * security.Sec   , msg string){
@@ -54,7 +56,7 @@ func (x * Mon)Maintain(PubK string){
 for{
   if(x.conn == nil){
     var ec error
-    x.conn ,  ec = net.Dial("tcp", monitor_server)
+    x.conn ,  ec = net.Dial("tcp", x.monitor_server)
     if(ec != nil){
     }else{    
        x.conn.Write([]byte(PubK+"\n"))

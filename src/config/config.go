@@ -14,6 +14,7 @@ type Conf struct{
   cpu float64
   bw float64
   disk float64
+  mon string
 }
 
 
@@ -43,6 +44,7 @@ x.bw = y
 y,e = strconv.ParseFloat(q[7],64)
 check(e)
 x.disk = y
+x.mon = q[8]
 return x
 }
 
@@ -58,6 +60,9 @@ return x.bw
 }
 func (x * Conf)Disk()float64{
 return x.disk
+}
+func (x * Conf)MonAddr()string{
+return x.mon
 }
 
 

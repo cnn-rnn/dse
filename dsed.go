@@ -94,7 +94,7 @@ func main(){
   pro.Start()
 
 
-  mon = moni.Create()
+  mon = moni.Create(cnf.MonAddr())
   go mon.Maintain(sec.GetPubKAsString())
   go mon.Listen(cnf.Dir0())
 

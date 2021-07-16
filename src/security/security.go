@@ -9,7 +9,7 @@ import (
 "crypto/x509"
 "crypto/sha256"
 "encoding/base64"
-"log"
+"../logger"
 )
 
 
@@ -105,8 +105,8 @@ var buff = make( []byte,n)
 l, _ := base64.StdEncoding.Decode(buff, []byte(sm))
 p , e1 := x509.ParsePKCS1PrivateKey(buff[:l])
 if e1 != nil {
-  log.Println("Base64DecodePrivate ",e1)
-  os.Exit(0)
+  logger.Loge("Base64DecodePrivate ")
+  return nil
 }
 return p
 }
@@ -115,13 +115,10 @@ func Base64DecodePublic(sm []byte)*rsa.PublicKey{
 n := base64.StdEncoding.DecodedLen(len(sm))
 var buff = make( []byte,n)
 l, _ := base64.StdEncoding.Decode(buff, []byte(sm))
-
-log.Println("l= ",string(l))
-
 p , e1 := x509.ParsePKCS1PublicKey(buff[:l])
 if e1 != nil {
-  log.Println("Base64DecodePublic ",e1)
-  os.Exit(0)
+  logger.Loge("Base64DecodePublic "+e1.Error())
+  return nil
 }
 return p
 }
@@ -130,7 +127,7 @@ return p
 func Load(fname string)*Sec{
 sm,e := ioutil.ReadFile(fname)
 if(e!=nil){
-  log.Println("security.Load e=",e)
+  logger.Loge("security.Load e="+e.Error())
   return nil
 }
 n := base64.StdEncoding.DecodedLen(len(sm))
@@ -149,8 +146,7 @@ msgHash := sha256.New()
 var err error
 _, err = msgHash.Write(msg)
 if err != nil {
-  log.Println("security.Sign err=",err)
-  os.Exit(0)
+  logger.Logee("security.Digest"+err.Error())
 }
 msgHashSum := msgHash.Sum(nil)
 return string(msgHashSum)
@@ -162,14 +158,12 @@ msgHash := sha256.New()
 var err error
 _, err = msgHash.Write(msg)
 if err != nil {
-  log.Println("security.Sign err=",err)
-  os.Exit(0)
+  logger.Logee("security.Sign err="+err.Error())
 }
 msgHashSum := msgHash.Sum(nil)
 signature, e1 := rsa.SignPSS(rand.Reader, x.PK, crypto.SHA256, msgHashSum, nil)
 if e1 != nil {
-  log.Println("security.Sign e1=",e1)
-  os.Exit(0)
+  logger.Logee("security.Sign e1="+e1.Error())
 }
 return signature
 }
@@ -205,8 +199,8 @@ return true
 func VerifySS(msg []byte,signature string ,PubK * rsa.PublicKey )bool{
 s,e := base64.StdEncoding.DecodeString(signature)
 if( e != nil){
-  log.Println("security.VerifySS",e)
-  os.Exit(0)
+  logger.Loge("security.VerifySS"+e.Error())
+  return false
 }
 return VerifyS(msg, s, PubK)
 }

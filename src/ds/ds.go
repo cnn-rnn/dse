@@ -2,10 +2,10 @@ package ds
 
 
 import(
-"log"
 "math/rand"
 "os"
 "time"
+"../logger"
 "../murl"
 "../filo"
 "../urlstore"
@@ -25,8 +25,7 @@ sites_dir := s+"/sites"
 if _, err := os.Stat(sites_dir); os.IsNotExist(err) {
   em := os.Mkdir(sites_dir, 0755)
     if(em != nil){
-             log.Println("ds em = ",em)
-             os.Exit(0)
+       logger.Logee("ds em = "+em.Error())
     }
 }
 rs := rand.NewSource(time.Now().UnixNano())
@@ -46,8 +45,7 @@ path := x.sites_dir+"/"+h
 if _, err := os.Stat(path); os.IsNotExist(err) {
   em := os.Mkdir(path, 0755)
     if(em != nil){
-             log.Println("dse em = ",em,"h = ",h)
-             os.Exit(0)
+      logger.Logee("dse em = "+em.Error())
     }
 }
 id := urlstore.Convert(s)
@@ -62,8 +60,7 @@ if(b){
 func (x * Ds) Rand()string{
 hf,ehf := os.OpenFile(x.dir0+"/host_ids.txt",os.O_RDONLY,0644)
 if(ehf != nil){
-   log.Println("ehf = ",ehf)
-   os.Exit(0)
+   logger.Logee("ehf = "+ehf.Error())
 }
 fi,_ := hf.Stat()
 M := int(fi.Size())/filo.LENGTH
@@ -75,7 +72,7 @@ id_h := z[4*filo.LENGTH5+filo.LENGTH1:len(z)]
 h := urlstore.GetUrl(x.dir0+"/hosts.txt"  ,string(id_h))
 id := filo.GetRandom(x.sites_dir+"/"+h+"/pages.txt")
 if(id == ""){
-   log.Println("nothing to do ",h)
+  return ""
 }
 u := urlstore.GetUrl(x.dir0+"/urls.txt"  ,id)
 return u

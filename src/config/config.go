@@ -2,10 +2,10 @@ package config
 
 
 import(
-"log"
 "strconv"
 "strings"
 "io/ioutil"
+"../logger"
 )
 
 
@@ -19,8 +19,7 @@ type Conf struct{
 
 func check(e error){
 if(e!=nil){
-  log.Println("error ",e)
-  panic(e)
+  logger.Logee("error "+e.Error())
 }
 }
 

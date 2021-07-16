@@ -2,13 +2,12 @@ package conv
 
 
 import(
-"log"
 "os"
 "strconv"
 "strings"
 "crypto/sha256"
 "encoding/hex"
-
+"../logger"
 )
 
 
@@ -16,8 +15,7 @@ import(
 func S_i64(s string)int64{
 z,e := strconv.ParseInt(strings.Trim(s," "), 10, 64)
 if(e != nil){
-   log.Println("conv.S_i64 e = ",e,"s= ",s)
-   os.Exit(0)
+   logger.Logee("conv.S_i64 e = "+e.Error())
 }
 return int64(z)
 }
@@ -81,8 +79,7 @@ func B_i(x []byte) int{
 y := string(x)
 z,e := strconv.Atoi(strings.Trim(y," "))
 if(e != nil){
-   log.Println("conv.B_i e = ",e,"x= ",string(x))
-   os.Exit(0)
+   logger.Logee("conv.B_i e = "+e.Error())
 }
 return z
 }

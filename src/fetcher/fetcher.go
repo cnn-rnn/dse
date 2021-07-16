@@ -146,8 +146,4 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
 }
 
 
-/*
-for k := range m {   // m is a map
-    fmt.Printf("key[%s] value[%s]\n", k, m[k])
-}
-*/
+

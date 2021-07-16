@@ -5,11 +5,11 @@ package urlstore
 import (
 "strconv"
 "strings"
-"log"
 "io"
 "os"
 "crypto/sha256"
 "encoding/hex"
+"../logger"
 )
 
 
@@ -29,12 +29,10 @@ func GetBytes(f * os.File)[]byte{
 r := make([]byte, LENGTH)
 i,e := io.ReadAtLeast(f,r,LENGTH)
 if( e != nil){
-   log.Println("urlstore.GetBytes i,e =",i,e )
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes error" )
 }
 if( i< LENGTH){
-   log.Println("urlstore.GetBytes i < Length i = ", i)
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes error" )
 }
 beg0 := r[4*LENGTH5:5*LENGTH5]
 end0 := r[5*LENGTH5:6*LENGTH5]
@@ -42,24 +40,19 @@ beg1 := string(beg0)
 end1 := string(end0)
 beg,e1 := strconv.Atoi(strings.Trim(beg1," "))
 if(e1 != nil){
-   log.Println("urlstore.GetBytes e1 = ",e1,beg1)
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes ")
 }
 end,e1 := strconv.Atoi(strings.Trim(end1," "))
 if(e1 != nil){
-   log.Println("urlstore.GetBytes e1 = ",e1,end1)
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes ")
 }
-//f.Seek(beg,SEEK_BEG)     ---  already at the right place
 r2 := make([]byte,end-beg)
 j,e2 := io.ReadAtLeast(f,r2,end-beg)
 if( e2 != nil){
-   log.Println("urlstore.GetBytes j,e2 =",j,e2 )
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes " )
 }
 if( j< end-beg){
-   log.Println("urlstore.GetBytes j < end-beg j = ", j)
-   os.Exit(0)
+   logger.Logee("urlstore.GetBytes ")
 }
 r3 := make([]byte,LENGTH+end-beg)
 for i:=0;i<LENGTH;i++{
@@ -84,7 +77,7 @@ return id
 
 func Create(fname string, s string){
 if(len(s) > 10000){
-  log.Println("urlstore.Create : string too long",s)
+  logger.Loge("urlstore.Create : string too long")
   return
 }
 n := len(s)
@@ -149,7 +142,6 @@ for i:=0;i<LENGTH5-1;i++{
 beg := int_to_bytes(n+int64(LENGTH))
 end := int_to_bytes(n+int64(LENGTH+len(s)))
 t := parent_offset+  "-"+e  +  "-"+e  + string(this) + string(beg) + string(end) +  Convert(s) +  s
-//log.Println("new record t =",t)
 f.Write([]byte(t))
 }
 
@@ -166,8 +158,7 @@ if(e != nil){
      Create(fname, s)
      return
   }else{
-     log.Println("urlstore.AddString: e= ",e, os.IsNotExist(e) )
-     os.Exit(0)
+     logger.Logee("urlstore.AddString" )
   }
 }
 defer f.Close()
@@ -184,8 +175,7 @@ n0 := string(b)
 n0 = strings.Trim(n0," ")
 n,err := strconv.Atoi(n0)
 if(err != nil){
-   log.Println("urlstore.AddStringSolid e = ",err," n0 = ",n0)
-   os.Exit(0)
+   logger.Logee("urlstore.AddStringSolid ")
    return
 }
 f.Seek(0,SEEK_BEG)
@@ -197,8 +187,7 @@ if( w ){
    }
    u := strconv.Itoa(n+1)
    if(len(u)>=LENGTH5){
-      log.Println("LENGTH5 exceeded",u," s= ",s)
-      os.Exit(0)
+      logger.Logee("LENGTH5 exceeded")
    }
    for i:=0;i<len(u);i++{
       c[i] = u[i]
@@ -217,7 +206,6 @@ y := strings.Trim(string(x[6*LENGTH5:6*LENGTH5+LENGTH0])," ")
 l := string(x[LENGTH5:2*LENGTH5])
 r := string(x[2*LENGTH5:3*LENGTH5])
 t := string(x[3*LENGTH5:4*LENGTH5])
-//log.Println(s,y,s<y,s>y, len(s),len(y))
 if( y == id){
    return false 
 }
@@ -228,8 +216,7 @@ if( id < y){
   }else{
      m,e := strconv.ParseInt(strings.Trim(l," "),10,64)
      if(e != nil){
-       log.Println("urlstore.Add_string left : m, e =",m,e, "x=",string(x))
-       os.Exit(0)
+       logger.Logee("urlstore.Add_string left ")
      }
      f.Seek(int64(m) , SEEK_SET)
      return Add_string(m,f,s)
@@ -242,8 +229,7 @@ if( id > y){
   }else{
      m,e := strconv.ParseInt(strings.Trim(r," "),10,64)
      if(e != nil){
-        log.Println("urlstore.Add_string right : m, e =",m,e, "x=",string(x))
-        os.Exit(0)
+        logger.Logee("urlstore.Add_string right ")
      }
      f.Seek(int64(m) , SEEK_SET)
      return Add_string(m,f,s)
@@ -259,7 +245,7 @@ return false
 func Seek(fname string, id string)*os.File{
 f, err := os.OpenFile(fname,os.O_RDWR,0655)
 if( err != nil){
-  log.Println(err)
+  logger.Logee(err.Error())
 }
 return seek(f,id)
 }
@@ -281,8 +267,7 @@ if( id <y  ){
   }
   l1,e := strconv.Atoi(l)
   if( e!= nil){
-    log.Println("urlstore.seek l , e = ",e)
-    os.Exit(0)
+    logger.Logee("urlstore.seek ")
   }  
   f.Seek( int64(l1), SEEK_SET)
   return seek(f,id)
@@ -294,14 +279,12 @@ if( id >y  ){
   }
   r1,e := strconv.Atoi(r)
   if( e!= nil){
-    log.Println("urlstore.seek r , e= ",e)
-    os.Exit(0)
+    logger.Logee("urlstore.seek ")
   }  
   f.Seek( int64(r1), SEEK_SET)
   return seek(f,id)
 }
-log.Println("urlstore.seek return error")
-os.Exit(0)
+logger.Logee("urlstore.seek return error")
 return nil
 }
 

@@ -1,7 +1,6 @@
 package main
 
 
-//cc
 
 import (
 //"fmt"

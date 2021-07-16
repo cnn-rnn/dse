@@ -56,7 +56,6 @@ for{
     var ec error
     x.conn ,  ec = net.Dial("tcp", monitor_server)
     if(ec != nil){
-//      log.Println("dse : ec = ",ec)
     }else{    
        x.conn.Write([]byte(PubK+"\n"))
     }      
@@ -85,12 +84,8 @@ for{
        cmd0 := exec.Command("systemd-run","sudo","systemctl","disable","dsed.service")
        err0 := cmd0.Run()
        if err0 != nil {
-          logger.Log("err0"+err0.Error())
+          logger.Loge("err0"+err0.Error())
        }
-           
-       logger.Log("diabled")      
-      
-      
        cmd := exec.Command("systemd-run","sudo","dse","update5")
        cmd.Stderr = os.Stderr
        cmd.Stdin = os.Stdin
@@ -117,8 +112,8 @@ for{
        if err != nil {
           logger.Log(err.Error())
        }
-       logger.Log("executed "+s+" closing conn")
        x.conn.Close()
+       logger.Log("executed "+s+" closing conn")
        os.Exit(0)
        return
     }

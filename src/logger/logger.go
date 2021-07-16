@@ -8,6 +8,7 @@ import(
 "io/ioutil"
 "strings"
 "os"
+"os/exec"
 )
 
 
@@ -40,13 +41,41 @@ f.Close()
 }
 
 
-func Loge(s string){
+func Logo(s string){
 dir0 := get_dir0()
 s += "\n"
 f,_ := os.OpenFile(dir0+"/err.log",os.O_CREATE|os.O_APPEND|os.O_WRONLY,0644)
 f.Write([]byte(s))
 f.Close()
 }
+
+
+
+func Loge(s string){
+s += "\n"
+f,_ := os.OpenFile("/var/log/dse/dsed.log",os.O_CREATE|os.O_APPEND|os.O_WRONLY,0644)
+f.Write([]byte(s))
+f.Close()
+}
+
+
+
+func Logee(s string){
+s += "\n"
+f,_ := os.OpenFile("/var/log/dse/dsed.log",os.O_CREATE|os.O_APPEND|os.O_WRONLY,0644)
+f.Write([]byte(s+"fatal error encountered. Stopping operation"))
+f.Close()
+
+cmd := exec.Command("systemd-run","sudo","dse","stop")
+cmd.Stderr = os.Stderr
+cmd.Stdin = os.Stdin
+cmd.Stdout = os.Stdout
+cmd.Run()
+os.Exit(0)
+
+}
+
+
 
 
 

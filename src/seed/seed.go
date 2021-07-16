@@ -2,8 +2,6 @@ package seed
 
 
 import(
-//"fmt"
-//"os"
 "strings"
 "io/ioutil"
 )

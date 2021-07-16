@@ -4,8 +4,6 @@ package proc
 
 import (
 "os"
-//"fmt"
-//"log"
 "io/ioutil"
 "strconv"
 "strings"

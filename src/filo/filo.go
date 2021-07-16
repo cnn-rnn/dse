@@ -22,7 +22,7 @@ var SEEK_END = 2
 var SEEK_CUR = 1
 
 
-var LENGTH5 = 10
+var LENGTH5 = 17
 var LENGTH1 = 4
 var LENGTH0 = 64
 

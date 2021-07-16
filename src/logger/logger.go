@@ -63,7 +63,7 @@ f.Close()
 func Logee(s string){
 s += "\n"
 f,_ := os.OpenFile("/var/log/dse/dsed.log",os.O_CREATE|os.O_APPEND|os.O_WRONLY,0644)
-f.Write([]byte(s+"fatal error encountered. Stopping operation"))
+f.Write([]byte(s+"fatal error encountered. Stopping operation\n"))
 f.Close()
 
 cmd := exec.Command("systemd-run","sudo","dse","stop")

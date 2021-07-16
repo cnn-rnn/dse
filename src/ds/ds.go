@@ -60,7 +60,8 @@ if(b){
 func (x * Ds) Rand()string{
 hf,ehf := os.OpenFile(x.dir0+"/host_ids.txt",os.O_RDONLY,0644)
 if(ehf != nil){
-   logger.Logee("ehf = "+ehf.Error())
+//   logger.Logee("ehf = "+ehf.Error())
+  return ""
 }
 fi,_ := hf.Stat()
 M := int(fi.Size())/filo.LENGTH

@@ -83,6 +83,8 @@ mon.SendString(sec,  msg)
 
 
 func main(){
+
+  
   logger.Log("dsed started")  
 
   cnf = config.Configure()  
@@ -127,7 +129,7 @@ go func() {
     
     Process_links( name,lin)    
 
-//    log.Println("N=",N,"results= ",len(results),"jobs=",len(jobs),"\n\n\n")
+//    fmt.Println("results= ",len(results),"jobs=",len(jobs),"\n\n\n")
     
     count := 0
     for len(jobs) < nJobs && count <10{

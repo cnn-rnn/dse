@@ -10,6 +10,7 @@ import (
 "html"
 "io"
 "compress/gzip"
+"../logger"
 "../text"
 "../murl"
 )
@@ -36,6 +37,7 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
 //start:
   req, err := http.NewRequest("GET", name, nil)
   if err != nil {
+      logger.Logo("invalid url "+err.Error())
       return L,"",0,int64(0),"invalid url"+err.Error()
   }
   moz :=  "Mozilla/5.0 (X11; Linux i686; rv:88.0) Gecko/20100101 Firefox/88.0"
@@ -43,6 +45,7 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
   req.Header.Set("User-Agent", moz)
   resp,err := client.Do(req)
   if(err != nil){
+     logger.Logo("client.Do err="+err.Error())
      return L,"",0,int64(0),"client.Do err="+err.Error()
   }
   defer resp.Body.Close()
@@ -52,6 +55,7 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
     case "gzip":
       reader, err = gzip.NewReader(resp.Body)
       if(err != nil){
+        logger.Logo("gunzip error ="+err.Error())
         return L,"",0,int64(0),"gunzip error ="+err.Error()
       }
       defer reader.Close()
@@ -60,16 +64,20 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
       defer reader.Close()
   }  
   if(reader == nil){
-     return L,"",0,int64(0),"reader is nil"
+      logger.Logo("reader is nil")
+      return L,"",0,int64(0),"reader is nil"
   }
   typ := resp.Header.Get("Content-Type") 
   if(typ == "application/pdf"){
+      logger.Logo("pdf crawled")
       return L,"",0,int64(0),"pdf crawled"
   }  
   if(typ == "image/jpeg"){
+      logger.Logo("jpeg crawled")
       return L,"",0,int64(0),"jpeg crawled"
   }  
   if(strings.Index(typ,"text/html") == -1  && strings.Index(typ,"gzip") == -1){
+     logger.Logo("non html non gzip non pdf non jpeg")
      return L,"",0,int64(0),"non html non gzip non pdf non jpeg"
   }
   buf := new(strings.Builder)

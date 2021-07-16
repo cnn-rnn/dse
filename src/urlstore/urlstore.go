@@ -19,7 +19,7 @@ var SEEK_END = 2
 var SEEK_CUR = 1
 
 
-var LENGTH5 = 12
+var LENGTH5 = 17
 var LENGTH0 = 64
 
 var LENGTH = 6*LENGTH5 + LENGTH0

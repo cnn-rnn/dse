@@ -1,9 +1,7 @@
 package main
 
 
-//aa
-//bb
-
+//cc
 
 import (
 //"fmt"

@@ -2,6 +2,8 @@ package seed
 
 
 import(
+//"fmt"
+//"os"
 "strings"
 "io/ioutil"
 )
@@ -43,11 +45,4 @@ for i:=range(q){
 }
 
 }
-
-
-
-
-
-
-
 

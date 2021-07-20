@@ -60,6 +60,7 @@ type Resp struct{
 
 func worker(id int, jobs <-chan string, results chan<- Resp) {
   for j := range jobs {
+  
     links,txt,siz,t, err := fetcher.OnePageLinks(j)
     if( err == ""){
        results <- Resp{j,links,txt,siz,t,err}
@@ -120,6 +121,7 @@ go func() {
 
   for {
 
+
     R := <-results
     name := R.name
     lin := R.links
@@ -130,7 +132,8 @@ go func() {
     Process_links( name,lin)    
 
 //    fmt.Println("results= ",len(results),"jobs=",len(jobs),"\n\n\n")
-    
+
+
     count := 0
     for len(jobs) < nJobs && count <10{
       count+=1
@@ -139,6 +142,9 @@ go func() {
         jobs <- u
       }
     }
+
+
+    
     
   }  
 }  

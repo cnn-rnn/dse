@@ -15,7 +15,6 @@ import(
 "../logger"
 )
 
-//var monitor_server = "174.138.39.149:7001"
 
 
 

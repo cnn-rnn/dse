@@ -6,7 +6,7 @@ import (
 "strings"
 "os"
 "time"
-
+//"fmt"
 "html"
 "io"
 "compress/gzip"
@@ -83,6 +83,7 @@ func OnePageLinks(name string)(map[string]bool,string,int,int64,string){
   buf := new(strings.Builder)
   io.Copy(buf, reader)
   s0 := buf.String()
+  
  
   
 //  s1 := text.Remove0(s0,"<script","</script>")

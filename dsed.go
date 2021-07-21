@@ -5,6 +5,7 @@ package main
 import (
 //"fmt"
 "log"
+"strconv"
 //"time"
 //"math/rand"
 //"os"
@@ -75,8 +76,10 @@ func Process_links(name string, links map[string]bool){
 for i:= range links{
   dstore.Store(i)
 }
-msg := protocol.Serialize(name,links)
-mon.SendString(sec,  msg)
+//msg := protocol.Serialize(name,links)
+//go mon.SendString(sec,  msg)
+siz := strconv.Itoa(len(links)) + protocol.SEP + name + protocol.SEP
+go mon.SendString(sec,  siz)
 }
 
 
@@ -131,18 +134,17 @@ go func() {
     
     Process_links( name,lin)    
 
-//    fmt.Println("results= ",len(results),"jobs=",len(jobs),"\n\n\n")
+//    fmt.Println("results= ",len(results),"jobs=",len(jobs),"\n")
 
 
     count := 0
-    for len(jobs) < nJobs && count <10{
+    for len(jobs) < nJobs && count <100{
       count+=1
       u := dstore.Rand()
       if(len(u)>0){
         jobs <- u
       }
     }
-
 
     
     

@@ -5,6 +5,7 @@ import(
 "math/rand"
 "os"
 "time"
+//"fmt"
 "../logger"
 "../murl"
 "../filo"
@@ -50,8 +51,11 @@ if _, err := os.Stat(path); os.IsNotExist(err) {
 }
 id := urlstore.Convert(s)
 b := filo.AddString(x.sites_dir+"/"+h+"/pages.txt",id)
+//fmt.Println("   ",b)
 if(b){
-     urlstore.AddString(x.dir0+"/urls.txt",s)
+     n := urlstore.AddString(x.dir0+"/urls.txt",s)
+     _ = n
+//     fmt.Println("n=",n)
 }        
 }
 

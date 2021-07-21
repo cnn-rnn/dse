@@ -151,23 +151,23 @@ f.Write([]byte(t))
 
 
 
-func AddString(fname string, s string){
+func AddString(fname string, s string)int{
 f,e := os.OpenFile(fname,os.O_RDWR,0644)
 if(e != nil){
   if(os.IsNotExist(e) ){
      Create(fname, s)
-     return
+     return 0
   }else{
      logger.Logee("urlstore.AddString" )
   }
 }
 defer f.Close()
-AddStringSolid(f,s)
+return AddStringSolid(f,s)
 }
 
 
 
-func AddStringSolid(f *os.File, s string){
+func AddStringSolid(f *os.File, s string)int{
 b := make([]byte,LENGTH5)
 f.Seek(0,SEEK_SET)
 f.Read(b)
@@ -176,10 +176,10 @@ n0 = strings.Trim(n0," ")
 n,err := strconv.Atoi(n0)
 if(err != nil){
    logger.Logee("urlstore.AddStringSolid ")
-   return
+   return 0
 }
 f.Seek(0,SEEK_BEG)
-w := Add_string(0,f,s)
+w,m := Add_string(0,f,s)
 if( w ){
    c := make([]byte,LENGTH5)
    for i:=0;i<LENGTH5;i++{
@@ -195,11 +195,12 @@ if( w ){
    f.Seek(0,SEEK_BEG)
    f.Write(c)
 }
+return m
 }
 
 
 
-func Add_string(n int64, f * os.File, s string)bool{
+func Add_string(n int64, f * os.File, s string)(bool,int){
 id := Convert(s)
 x := GetBytes(f)
 y := strings.Trim(string(x[6*LENGTH5:6*LENGTH5+LENGTH0])," ")
@@ -207,35 +208,37 @@ l := string(x[LENGTH5:2*LENGTH5])
 r := string(x[2*LENGTH5:3*LENGTH5])
 t := string(x[3*LENGTH5:4*LENGTH5])
 if( y == id){
-   return false 
+   return false,1
 }
 if( id < y){
   if( l[0] == '-'){
      CreateNewRecord(n+int64(LENGTH5),t,f,s)
-     return true
+     return true,1
   }else{
      m,e := strconv.ParseInt(strings.Trim(l," "),10,64)
      if(e != nil){
        logger.Logee("urlstore.Add_string left ")
      }
      f.Seek(int64(m) , SEEK_SET)
-     return Add_string(m,f,s)
+     u,v := Add_string(m,f,s)
+     return u,v+1
   }
 }    
 if( id > y){
   if( r[0] == '-'){
      CreateNewRecord(n+2*int64(LENGTH5),t,f,s)
-     return true
+     return true,1
   }else{
      m,e := strconv.ParseInt(strings.Trim(r," "),10,64)
      if(e != nil){
         logger.Logee("urlstore.Add_string right ")
      }
      f.Seek(int64(m) , SEEK_SET)
-     return Add_string(m,f,s)
+     u,v:=Add_string(m,f,s)
+     return u, v+1
   }
 }
-return false    
+return false,0    
 }
 
 

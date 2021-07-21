@@ -33,9 +33,9 @@ return &x
 }
 
 func (x * Mon)SendString(sec * security.Sec   , msg string){
-if(x.conn != nil){
   ziga := sec.SignS([]byte(msg))
   y := msg  + ziga + protocol.SEP
+if(x.conn != nil){
   x.conn.Write([]byte(y+"\n"))
 }
 }
